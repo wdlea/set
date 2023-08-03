@@ -72,3 +72,32 @@ func (s *Set[set_type]) Has(item set_type) bool {
 
 	return false
 }
+
+//merges all entries from other into this set
+func (s *Set[set_type]) MergeWith(other *Set[set_type]) {
+
+	for _, arr := range other.entries {
+		for _, item := range arr {
+			s.Push(item)
+		}
+	}
+}
+
+//merges 2 sets into one
+func Merge[set_type IHashable](a *Set[set_type], b *Set[set_type], joinedSize uint64) (joined *Set[set_type]) {
+	j := MakeSet[set_type](uint64(joinedSize))
+	joined = &j
+
+	if a.size == joinedSize { //try copy(cheaper operation then merge)
+		copy(joined.entries, a.entries)
+		joined.MergeWith(b)
+	} else if b.size == joinedSize {
+		copy(joined.entries, b.entries)
+		joined.MergeWith(a)
+	} else { //otherwise manually merge (expensive)
+		joined.MergeWith(a)
+		joined.MergeWith(b)
+	}
+
+	return
+}

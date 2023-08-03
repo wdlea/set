@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/wdlea/SaveSystem/set"
+	"github.com/wdlea/set"
 )
 
 func TestSet(t *testing.T) {
